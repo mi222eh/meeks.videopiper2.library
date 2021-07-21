@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+      "declarationDir": "dist",
+      "declaration": true,
+      "target": "ES2018",
+      "lib": ["ESNext", "ESNext.Array", "ESNext.AsyncIterable", "ESNext.BigInt", "ESNext.Intl", "ESNext.Promise", "ESNext.String", "ESNext.Symbol", "DOM"],
+      "moduleResolution": "Node",
+      "module": "CommonJS",
+      "outDir": "dist",
+      "allowSyntheticDefaultImports": true,
+      "strict": false,
+      "esModuleInterop": true,
+      "importHelpers": true
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+      "node_modules"
+    ]
+}
