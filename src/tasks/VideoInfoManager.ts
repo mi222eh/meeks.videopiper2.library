@@ -17,10 +17,9 @@ export async function ResolveFormatList(item: QueueItem) {
     }
 
     const chosenFormat = item.info.opts.choice;
-    const cancelFn = () => process.cancel();
     const process = getInfo(item.info.opts.url);
 
-    item.eventHandler.onOnceCancel(cancelFn);
+    item.eventHandler.onOnceCancel(() => process.cancel());
 
     logInfo("Getting Video Info");
     setStatusText(item, "Getting Video Info");

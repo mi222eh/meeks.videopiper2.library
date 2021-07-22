@@ -17,9 +17,8 @@ async function ResolveFormatList(item) {
             return;
         }
         const chosenFormat = item.info.opts.choice;
-        const cancelFn = () => process.cancel();
         const process = InvokeManager_1.getInfo(item.info.opts.url);
-        item.eventHandler.onOnceCancel(cancelFn);
+        item.eventHandler.onOnceCancel(() => process.cancel());
         Logger_1.logInfo("Getting Video Info");
         setStatusText(item, "Getting Video Info");
         const info = new VideoInfo_1.VideoInfo(await process.promise);

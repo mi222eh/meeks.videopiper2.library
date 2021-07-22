@@ -144,10 +144,18 @@ function intervalCheck() {
     });
 }
 setInterval(intervalCheck, 500);
+const queueTaskList = [
+    VideoInfoManager.ResolveFormatList,
+    VideoDownloadManager.DownloadMaterial,
+    VideoConvertManager.HandleMedia,
+];
 async function DoTheItem(item) {
-    await VideoInfoManager.ResolveFormatList(item);
-    await VideoDownloadManager.DownloadMaterial(item);
-    await VideoConvertManager.HandleMedia(item);
+    for (const queueTask of queueTaskList) {
+        await queueTask(item);
+        if (item.isStopped) {
+            return;
+        }
+    }
     item.isFinished = true;
     VideoInfoManager.setStatusText(item, "Finished");
 }
