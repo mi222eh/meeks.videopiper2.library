@@ -122,13 +122,15 @@ export class QueueItem {
   /** Removes this item from the queue */
   Remove() {
     this.Cancel();
-    _.remove(Queue, (item) => item === this);
+    removeItem(this.id);
     remove(VideoDownloadManager.getTempFolder(this));
     Queue = Queue;
   }
 }
 
-export function removeItem(id: number) {}
+export function removeItem(id: number) {
+  Queue = Queue.filter((item) => item.id !== id);
+}
 
 export function addVideoItem(opts: QueueItemOpts) {
   const item = new QueueItem();

@@ -7,7 +7,7 @@ const VideoInfoManager = tslib_1.__importStar(require("./tasks/VideoInfoManager"
 const VideoDownloadManager = tslib_1.__importStar(require("./tasks/VideoDownloadManager"));
 const VideoConvertManager = tslib_1.__importStar(require("./tasks/VideoConvertManager"));
 const Logger_1 = require("./Logger");
-const lodash_1 = tslib_1.__importStar(require("lodash"));
+const lodash_1 = require("lodash");
 const fs_extra_1 = require("fs-extra");
 /** This is the queue that all of the items will be */
 exports.Queue = new Array();
@@ -102,13 +102,15 @@ class QueueItem {
     /** Removes this item from the queue */
     Remove() {
         this.Cancel();
-        lodash_1.default.remove(exports.Queue, (item) => item === this);
+        removeItem(this.id);
         fs_extra_1.remove(VideoDownloadManager.getTempFolder(this));
         exports.Queue = exports.Queue;
     }
 }
 exports.QueueItem = QueueItem;
-function removeItem(id) { }
+function removeItem(id) {
+    exports.Queue = exports.Queue.filter((item) => item.id !== id);
+}
 exports.removeItem = removeItem;
 function addVideoItem(opts) {
     const item = new QueueItem();
