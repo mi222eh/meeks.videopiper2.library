@@ -3,13 +3,13 @@ import { FormatEnum } from ".";
 import Events from "events";
 import { Format } from "youtube-dl-dal/dist/videoinfo";
 /** This is the queue that all of the items will be */
-export declare const Queue: QueueItem[];
+export declare let Queue: QueueItem[];
 /**Will return the count of items that are in progress */
 export declare function getInProgressCount(): number;
 /** Gets a list of items that are ready to go */
 export declare function getReadyList(): QueueItem[];
 /** Gets the next id for an item */
-export declare function getNextId(): any;
+export declare function getNextId(): number;
 /**adds an item to the list */
 export declare function add(item: QueueItem): void;
 /** gets the number of items that are in the queue */
@@ -42,7 +42,7 @@ export declare class QueueItem {
     isStopped: boolean;
     isInProgress: boolean;
     isFinished: boolean;
-    id: any;
+    id: number;
     setStatus(key: string, value: string): void;
     getStatus(key: string): string;
     hasStatus(key: string): boolean;
@@ -55,5 +55,6 @@ export declare class QueueItem {
     /** Removes this item from the queue */
     Remove(): void;
 }
+export declare function removeItem(id: number): void;
 export declare function addVideoItem(opts: QueueItemOpts): void;
 export {};

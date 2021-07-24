@@ -9,7 +9,7 @@ import _, { head, max } from "lodash";
 import { fstat, remove } from "fs-extra";
 
 /** This is the queue that all of the items will be */
-export const Queue = new Array<QueueItem>();
+export let Queue = new Array<QueueItem>();
 
 /**Will return the count of items that are in progress */
 export function getInProgressCount() {
@@ -23,7 +23,7 @@ export function getReadyList() {
   );
 }
 /** Gets the next id for an item */
-export function getNextId() {
+export function getNextId(): number {
   const nextid = max(Queue.map((item) => item.id));
   return isNaN(nextid) ? 1 : nextid + 1;
 }
@@ -124,8 +124,11 @@ export class QueueItem {
     this.Cancel();
     _.remove(Queue, (item) => item === this);
     remove(VideoDownloadManager.getTempFolder(this));
+    Queue = Queue;
   }
 }
+
+export function removeItem(id: number) {}
 
 export function addVideoItem(opts: QueueItemOpts) {
   const item = new QueueItem();

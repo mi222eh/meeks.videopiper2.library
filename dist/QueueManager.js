@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addVideoItem = exports.QueueItem = exports.getQueueCount = exports.add = exports.getNextId = exports.getReadyList = exports.getInProgressCount = exports.Queue = void 0;
+exports.addVideoItem = exports.removeItem = exports.QueueItem = exports.getQueueCount = exports.add = exports.getNextId = exports.getReadyList = exports.getInProgressCount = exports.Queue = void 0;
 const tslib_1 = require("tslib");
 const events_1 = tslib_1.__importDefault(require("events"));
 const VideoInfoManager = tslib_1.__importStar(require("./tasks/VideoInfoManager"));
@@ -104,9 +104,12 @@ class QueueItem {
         this.Cancel();
         lodash_1.default.remove(exports.Queue, (item) => item === this);
         fs_extra_1.remove(VideoDownloadManager.getTempFolder(this));
+        exports.Queue = exports.Queue;
     }
 }
 exports.QueueItem = QueueItem;
+function removeItem(id) { }
+exports.removeItem = removeItem;
 function addVideoItem(opts) {
     const item = new QueueItem();
     item.info = {
