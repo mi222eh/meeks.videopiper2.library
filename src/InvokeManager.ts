@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron";
 import * as lodash from "lodash";
-import { IVideoInfo } from "youtube-dl-dal/dist/videoinfo";
+import { IVideoInfo } from "meeks.nodejs.youtube-dl/dist/videoinfo";
 
 export class InvokeManager<T> {
   key = lodash.uniqueId("invoke");
