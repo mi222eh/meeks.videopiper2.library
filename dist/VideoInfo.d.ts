@@ -1,4 +1,4 @@
-import * as youtubedl from "youtube-dl-dal";
+import * as youtubedl from "meeks.nodejs.youtube-dl";
 export declare enum FormatEnum {
     "4K60" = "4k60",
     "4K" = "4k",

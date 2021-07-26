@@ -32,7 +32,7 @@ class VideoInfo {
         return lodash_1.default.sortBy(formatList, (x) => x.filesize);
     }
     getAudioFormats() {
-        const formatList = this.info.formats.filter((x) => x.vcodec.toLowerCase() === "none" && x.acodec !== 'none');
+        const formatList = this.info.formats.filter((x) => x.vcodec.toLowerCase() === "none" && x.acodec !== "none");
         return formatList;
     }
     getBestAudioFormat() {

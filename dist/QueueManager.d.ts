@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { FormatEnum } from ".";
 import Events from "events";
-import { Format } from "youtube-dl-dal/dist/videoinfo";
+import { Format } from "meeks.nodejs.youtube-dl/dist/videoinfo";
 /** This is the queue that all of the items will be */
 export declare let Queue: QueueItem[];
 /**Will return the count of items that are in progress */

@@ -1,4 +1,4 @@
-import { IVideoInfo } from "youtube-dl-dal/dist/videoinfo";
+import { IVideoInfo } from "meeks.nodejs.youtube-dl/dist/videoinfo";
 export declare class InvokeManager<T> {
     channel: string;
     key: string;
