@@ -1,6 +1,6 @@
 import { FormatEnum } from ".";
 import Events from "events";
-import { Format } from "youtube-dl-dal/dist/videoinfo";
+import { Format } from "meeks.nodejs.youtube-dl/dist/videoinfo";
 import * as VideoInfoManager from "./tasks/VideoInfoManager";
 import * as VideoDownloadManager from "./tasks/VideoDownloadManager";
 import * as VideoConvertManager from "./tasks/VideoConvertManager";

@@ -1,4 +1,4 @@
-import * as youtubedl from "youtube-dl-dal";
+import * as youtubedl from "meeks.nodejs.youtube-dl";
 import _ from "lodash";
 import { getInfo, InvokeManager } from "./InvokeManager";
 
@@ -31,7 +31,7 @@ export class VideoInfo {
   }
   getAudioFormats() {
     const formatList = this.info.formats.filter(
-      (x) => x.vcodec.toLowerCase() === "none" && x.acodec !== 'none'
+      (x) => x.vcodec.toLowerCase() === "none" && x.acodec !== "none"
     );
     return formatList;
   }
@@ -51,7 +51,8 @@ export class VideoInfo {
         const formatList = that.getVideoFormats();
         let filteredFormatList = _.filter(
           formatList,
-          (format) => format.width >= 3840 && format.width <= 4096 && format.fps >= 60
+          (format) =>
+            format.width >= 3840 && format.width <= 4096 && format.fps >= 60
         );
         filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
         const format = _.last(filteredFormatList);
@@ -61,7 +62,8 @@ export class VideoInfo {
         const formatList = that.getVideoFormats();
         let filteredFormatList = _.filter(
           formatList,
-          (format) => format.width >= 3840 && format.width <= 4096 && format.fps < 60
+          (format) =>
+            format.width >= 3840 && format.width <= 4096 && format.fps < 60
         );
         filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
         const format = _.last(filteredFormatList);
@@ -70,13 +72,19 @@ export class VideoInfo {
       ["1080p60"]() {
         const formatList = that.getVideoFormats();
 
-        const format = _.findLast(formatList, (x) => x.width === 1920 && x.fps >= 60);
+        const format = _.findLast(
+          formatList,
+          (x) => x.width === 1920 && x.fps >= 60
+        );
         return format;
       },
       ["1080p"]() {
         const formatList = that.getVideoFormats();
 
-        const format = _.findLast(formatList, (x) => x.width === 1920  && x.fps < 60);
+        const format = _.findLast(
+          formatList,
+          (x) => x.width === 1920 && x.fps < 60
+        );
         return format;
       },
       ["720p60"]() {
