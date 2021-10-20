@@ -1,5 +1,5 @@
 import * as youtubedl from "meeks.nodejs.youtube-dl";
-import _ from "lodash";
+import _, { get } from "lodash";
 import { getInfo, InvokeManager } from "./InvokeManager";
 
 // declare const format = "4K" | "1080p" | "720p" | "480p" | "360p"
@@ -24,14 +24,12 @@ export class VideoInfo {
     return this.info.title;
   }
   getVideoFormats() {
-    const formatList = this.info.formats.filter(
-      (x) => x.vcodec.toLowerCase() !== "none"
-    );
+    const formatList = this.info.formats.filter((x) => x.vcodec !== "none");
     return _.sortBy(formatList, (x) => x.filesize);
   }
   getAudioFormats() {
     const formatList = this.info.formats.filter(
-      (x) => x.vcodec.toLowerCase() === "none" && x.acodec !== "none"
+      (x) => x.vcodec === "none" && x.acodec !== "none"
     );
     return formatList;
   }
@@ -42,89 +40,8 @@ export class VideoInfo {
     return formatList[0];
   }
 
-  get getFormat(): {
-    [key in keyof typeof FormatEnum]: () => youtubedl.VideoInfo.Format;
-  } {
-    const that = this;
-    return {
-      ["4K60"]() {
-        const formatList = that.getVideoFormats();
-        let filteredFormatList = _.filter(
-          formatList,
-          (format) =>
-            format.width >= 3840 && format.width <= 4096 && format.fps >= 60
-        );
-        filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
-        const format = _.last(filteredFormatList);
-        return format;
-      },
-      ["4K"]() {
-        const formatList = that.getVideoFormats();
-        let filteredFormatList = _.filter(
-          formatList,
-          (format) =>
-            format.width >= 3840 && format.width <= 4096 && format.fps < 60
-        );
-        filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
-        const format = _.last(filteredFormatList);
-        return format;
-      },
-      ["1080p60"]() {
-        const formatList = that.getVideoFormats();
-
-        const format = _.findLast(
-          formatList,
-          (x) => x.width === 1920 && x.fps >= 60
-        );
-        return format;
-      },
-      ["1080p"]() {
-        const formatList = that.getVideoFormats();
-
-        const format = _.findLast(
-          formatList,
-          (x) => x.width === 1920 && x.fps < 60
-        );
-        return format;
-      },
-      ["720p60"]() {
-        const formatList = that.getVideoFormats();
-
-        const format = _.findLast(
-          formatList,
-          (x) => x.height > 700 && x.height < 800 && x.fps >= 60
-        );
-        return format;
-      },
-      ["720p"]() {
-        const formatList = that.getVideoFormats();
-
-        const format = _.findLast(
-          formatList,
-          (x) => x.height > 700 && x.height < 800 && x.fps < 60
-        );
-        return format;
-      },
-      ["480p"]() {
-        const formatList = that.getVideoFormats();
-        const format = _.findLast(
-          formatList,
-          (x) => x.height > 400 && x.height < 500
-        );
-        return format;
-      },
-      ["360p"]() {
-        const formatList = that.getVideoFormats();
-        const format = _.findLast(
-          formatList,
-          (x) => x.height > 300 && x.height < 400
-        );
-        return format;
-      },
-      audio() {
-        return that.getBestAudioFormat();
-      },
-    };
+  get getFormat() {
+    return getFormatObject(this);
   }
 }
 
@@ -138,4 +55,98 @@ export interface SelectFormatObj {
   maxWidth?: number;
   maxFps?: number;
   onlyAudio?: boolean;
+}
+
+export function getTitle(info: VideoInfo) {
+  return get(info.info, ["title"]) ?? "";
+}
+
+export function getVideoFormats(info: VideoInfo) {
+  const formatList = info.info.formats.filter((x) => x.vcodec !== "none");
+  return _.sortBy(formatList, (x) => x.filesize);
+}
+
+export function getFormatObject(video: VideoInfo): {
+  [key in keyof typeof FormatEnum]: () => youtubedl.VideoInfo.Format;
+} {
+  const that = video;
+  return {
+    ["4K60"]() {
+      const formatList = that.getVideoFormats();
+      let filteredFormatList = _.filter(
+        formatList,
+        (format) =>
+          format.width >= 3840 && format.width <= 4096 && format.fps >= 60
+      );
+      filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
+      const format = _.last(filteredFormatList);
+      return format;
+    },
+    ["4K"]() {
+      const formatList = that.getVideoFormats();
+      let filteredFormatList = _.filter(
+        formatList,
+        (format) =>
+          format.width >= 3840 && format.width <= 4096 && format.fps < 60
+      );
+      filteredFormatList = _.sortBy(filteredFormatList, (a) => a.filesize);
+      const format = _.last(filteredFormatList);
+      return format;
+    },
+    ["1080p60"]() {
+      const formatList = that.getVideoFormats();
+
+      const format = _.findLast(
+        formatList,
+        (x) => x.width === 1920 && x.fps >= 60
+      );
+      return format;
+    },
+    ["1080p"]() {
+      const formatList = that.getVideoFormats();
+
+      const format = _.findLast(
+        formatList,
+        (x) => x.width === 1920 && x.fps < 60
+      );
+      return format;
+    },
+    ["720p60"]() {
+      const formatList = that.getVideoFormats();
+
+      const format = _.findLast(
+        formatList,
+        (x) => x.height > 700 && x.height < 800 && x.fps >= 60
+      );
+      return format;
+    },
+    ["720p"]() {
+      const formatList = that.getVideoFormats();
+
+      const format = _.findLast(
+        formatList,
+        (x) => x.height > 700 && x.height < 800 && x.fps < 60
+      );
+      return format;
+    },
+    ["480p"]() {
+      const formatList = that.getVideoFormats();
+      const format = _.findLast(
+        formatList,
+        (x) => x.height > 400 && x.height < 500
+      );
+      return format;
+    },
+    ["360p"]() {
+      const formatList = that.getVideoFormats();
+      const format = _.findLast(
+        formatList,
+        (x) => x.height > 300 && x.height < 400
+      );
+      return format;
+    },
+    audio() {
+      return that.getBestAudioFormat();
+    },
+  };
 }
